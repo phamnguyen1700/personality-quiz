@@ -1,0 +1,174 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-cream: #fefcf4;
+  --color-mint: #f0f7f5;
+  --color-sky: #a6e4ef;
+  --color-teal: #36a9cf;
+  --color-ink: #2e1e11;
+  --color-brown: #7a5e45;
+  --color-orange: #fe5517;
+  --color-sun: #ffd341;
+  --color-green: #7ee1a8;
+  --color-pink: #fea7c3;
+  --font-display: 'Arial Rounded MT Bold', 'Nunito', 'Quicksand', system-ui, sans-serif;
+  --font-hand: 'Comic Sans MS', 'Segoe Print', cursive;
+  --shadow-soft: 0 18px 45px rgba(46, 30, 17, 0.12);
+  --shadow-playful: 0 22px 0 rgba(46, 30, 17, 0.08), 0 34px 60px rgba(46, 30, 17, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #fefcf4;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    linear-gradient(90deg, rgba(240, 247, 245, 0.96) 0 42%, rgba(254, 252, 244, 0.98) 42% 100%),
+    radial-gradient(circle at 10% 10%, rgba(255, 211, 65, 0.2), transparent 28%);
+  color: #7a5e45;
+  font-family: 'Nunito', 'Quicksand', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.feature-card {
+  min-height: 44px;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-family: var(--font-hand);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #2e1e11;
+  box-shadow: 0 4px 0 rgba(46, 30, 17, 0.16);
+}
+
+.squiggle {
+  background-image: url("data:image/svg+xml,%3Csvg width='144' height='18' viewBox='0 0 144 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 9C8 3 14 3 20 9C26 15 32 15 38 9C44 3 50 3 56 9C62 15 68 15 74 9C80 3 86 3 92 9C98 15 104 15 110 9C116 3 122 3 128 9C134 15 140 15 142 9' stroke='%23FFD341' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.cloud {
+  position: absolute;
+  width: 150px;
+  height: 54px;
+  border-radius: 28px;
+  opacity: 0.78;
+}
+
+.cloud::before,
+.cloud::after {
+  position: absolute;
+  content: '';
+  border-radius: 999px;
+}
+
+.cloud::before {
+  left: 28px;
+  top: -26px;
+  width: 62px;
+  height: 62px;
+}
+
+.cloud::after {
+  right: 18px;
+  top: -18px;
+  width: 52px;
+  height: 52px;
+}
+
+.cloud-blue,
+.cloud-blue::before,
+.cloud-blue::after {
+  border: 3px solid #a6e4ef;
+  background: #d6eee7;
+}
+
+.cloud-pink,
+.cloud-pink::before,
+.cloud-pink::after {
+  border: 3px solid #ffc1d2;
+  background: #f9dfe4;
+}
+
+.cloud-yellow,
+.cloud-yellow::before,
+.cloud-yellow::after {
+  border: 3px solid #ffe58d;
+  background: #fff5bf;
+}
+
+.star {
+  position: absolute;
+  font-size: 2.1rem;
+  filter: drop-shadow(0 4px 0 rgba(46, 30, 17, 0.08));
+}
+
+.float-slow {
+  animation: float-cloud 6s ease-in-out infinite;
+}
+
+.float-slower {
+  animation: float-cloud 8s ease-in-out infinite reverse;
+}
+
+.twinkle {
+  animation: twinkle-star 1.8s ease-in-out infinite;
+}
+
+.twinkle-delay {
+  animation: twinkle-star 2.2s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+@keyframes float-cloud {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 14px -10px;
+  }
+}
+
+@keyframes twinkle-star {
+  0%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+    opacity: 0.75;
+  }
+  50% {
+    scale: 1.25;
+    rotate: 12deg;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1023px) {
+  body {
+    background: linear-gradient(180deg, rgba(240, 247, 245, 0.96) 0 34%, rgba(254, 252, 244, 0.98) 34% 100%);
+  }
+
+  .cloud {
+    transform: scale(0.72);
+    transform-origin: top left;
+  }
+}

@@ -1,45 +1,74 @@
-import { useMemo, useState } from 'react'
-import { resultRules } from '../config/resultRules'
-import { questions } from '../data/questions'
-import { submitQuizResult } from '../services/googleSheet'
-import type { AnswerKey, AnswerRecord, Player, ResultRule, ScreenName } from '../types/quiz'
+import { useMemo, useState } from "react";
+import { resultRules } from "../config/resultRules";
+import { questions } from "../data/questions";
+import { submitQuizResult } from "../services/googleSheet";
+import type { AnswerKey, AnswerRecord, PersonalityAttribute, Player, ResultRule, ScreenName } from "../types/quiz";
 
 const emptyPlayer: Player = {
-  name: '',
-  photoUrl: '',
+  name: "",
+  photoUrl: "",
+};
+
+const attributeOrder: PersonalityAttribute[] = ["ĐP", "KL", "LH", "TG"];
+
+function getAttributeCounts(answers: AnswerRecord[]) {
+  return answers.reduce<Record<PersonalityAttribute, number>>(
+    (counts, answer) => {
+      counts[answer.attribute] += 1;
+      return counts;
+    },
+    { ĐP: 0, KL: 0, LH: 0, TG: 0 },
+  );
 }
 
-function getResultRule(score: number) {
-  return resultRules.find((rule) => score >= rule.minScore && score <= rule.maxScore) ?? resultRules[resultRules.length - 1]
+function getDominantAttribute(answers: AnswerRecord[]) {
+  const counts = getAttributeCounts(answers);
+  return attributeOrder.reduce<PersonalityAttribute>((winner, attribute) => {
+    return counts[attribute] > counts[winner] ? attribute : winner;
+  }, "ĐP");
+}
+
+function getResultRule(answers: AnswerRecord[]) {
+  const dominantAttribute = getDominantAttribute(answers);
+  return resultRules.find((rule) => rule.attribute === dominantAttribute) ?? resultRules[0];
 }
 
 export function useQuizEngine() {
-  const [screen, setScreen] = useState<ScreenName>('landing')
-  const [player, setPlayer] = useState<Player>(emptyPlayer)
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [answers, setAnswers] = useState<AnswerRecord[]>([])
-  const [failedQuestionNumber, setFailedQuestionNumber] = useState<number | null>(null)
+  const [screen, setScreen] = useState<ScreenName>("landing");
+  const [player, setPlayer] = useState<Player>(emptyPlayer);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<AnswerRecord[]>([]);
+  const [failedQuestionNumber, setFailedQuestionNumber] = useState<number | null>(null);
 
-  const currentQuestion = questions[currentQuestionIndex]
-  const totalScore = useMemo(() => answers.reduce((sum, answer) => sum + answer.score, 0), [answers])
-  const result = useMemo<ResultRule>(() => getResultRule(totalScore), [totalScore])
+  const currentQuestion = questions[currentQuestionIndex];
+  const attributeCounts = useMemo(() => getAttributeCounts(answers), [answers]);
+  const totalScore = useMemo(() => Math.max(...Object.values(attributeCounts)), [attributeCounts]);
+  const result = useMemo<ResultRule>(() => getResultRule(answers), [answers]);
 
-  const startRegistration = () => setScreen('registration')
+  const startWelcome = () => setScreen("welcome");
+  const continueToName = () => setScreen("name");
 
-  const startQuiz = (nextPlayer?: Player) => {
-    if (nextPlayer) {
-      setPlayer(nextPlayer)
-    }
-    setAnswers([])
-    setCurrentQuestionIndex(0)
-    setFailedQuestionNumber(null)
-    setScreen('quiz')
-  }
+  const submitName = (name: string) => {
+    setPlayer((current) => ({ ...current, name }));
+    setScreen("photo");
+  };
+
+  const submitPhoto = (photoUrl: string) => {
+    setPlayer((current) => ({ ...current, photoUrl }));
+    setScreen("ready");
+  };
+
+  const startQuiz = () => {
+    setAnswers([]);
+    setCurrentQuestionIndex(0);
+    setFailedQuestionNumber(null);
+    setScreen("quiz");
+  };
 
   const submitAnswer = (answerKey: AnswerKey) => {
-    const answer = currentQuestion.answers.find((item) => item.key === answerKey)
+    const answer = currentQuestion.answers.find((item) => item.key === answerKey);
     if (!answer) {
-      return
+      return;
     }
 
     const nextAnswers = [
@@ -47,49 +76,53 @@ export function useQuizEngine() {
       {
         questionId: currentQuestion.id,
         answerKey,
-        score: answer.score,
+        attribute: answer.attribute,
       },
-    ]
+    ];
 
-    setAnswers(nextAnswers)
+    setAnswers(nextAnswers);
 
     if (currentQuestionIndex + 1 >= questions.length) {
-      const nextTotalScore = nextAnswers.reduce((sum, item) => sum + item.score, 0)
-      const nextResult = getResultRule(nextTotalScore)
+      const nextResult = getResultRule(nextAnswers);
+      const nextCounts = getAttributeCounts(nextAnswers);
+      const dominantCount = Math.max(...Object.values(nextCounts));
 
       void submitQuizResult({
         player,
         answers: nextAnswers,
-        totalScore: nextTotalScore,
+        totalScore: dominantCount,
         result: nextResult,
-        status: 'Hoàn thành',
-      }).catch(() => undefined)
+        status: "Hoàn thành",
+      }).catch(() => undefined);
 
-      setScreen('result')
-      return
+      setScreen("result");
+      return;
     }
 
-    setCurrentQuestionIndex((index) => index + 1)
-  }
+    setCurrentQuestionIndex((index) => index + 1);
+  };
 
   const failByTimeout = () => {
-    setFailedQuestionNumber(currentQuestionIndex + 1)
-    setScreen('gameOver')
-  }
+    setFailedQuestionNumber(currentQuestionIndex + 1);
+    setScreen("gameOver");
+  };
 
   const retryQuiz = () => {
-    setAnswers([])
-    setCurrentQuestionIndex(0)
-    setFailedQuestionNumber(null)
-    setScreen('quiz')
-  }
+    setAnswers([]);
+    setCurrentQuestionIndex(0);
+    setFailedQuestionNumber(null);
+    setScreen("quiz");
+  };
+
+  const showAvatar = () => setScreen("avatar");
 
   const backHome = () => {
-    setAnswers([])
-    setCurrentQuestionIndex(0)
-    setFailedQuestionNumber(null)
-    setScreen('landing')
-  }
+    setAnswers([]);
+    setCurrentQuestionIndex(0);
+    setFailedQuestionNumber(null);
+    setPlayer(emptyPlayer);
+    setScreen("landing");
+  };
 
   return {
     screen,
@@ -101,11 +134,15 @@ export function useQuizEngine() {
     totalScore,
     result,
     failedQuestionNumber,
-    startRegistration,
+    startWelcome,
+    continueToName,
+    submitName,
+    submitPhoto,
     startQuiz,
     submitAnswer,
     failByTimeout,
     retryQuiz,
+    showAvatar,
     backHome,
-  }
+  };
 }

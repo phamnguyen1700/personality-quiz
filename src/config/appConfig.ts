@@ -1,13 +1,12 @@
 export const appConfig = {
-  managerName: "An",
+  managerName: "Muda Control",
   managerImage: "/manager.png",
-  quizTitle: "Bạn Là Kiểu Người Thế Nào Trong Công Ty",
+  quizTitle: "MUDA BUSTER",
   quizSubtitle:
-    "Chỉ 10 câu hỏi vui vẻ là bạn sẽ biết mình thuộc tuýp tính cách nào.",
-  questionTimeLimit: 20,
+    "Bạn là Chiến Thần Linh Hoạt hay Vua Kỷ Luật trên đường đua săn tìm Muda? Thử ngay trắc nghiệm để đọc vị phong cách làm việc và nhận ngay bí kíp loại bỏ lãng phí.",
+  questionTimeLimit: 30,
   googleSheetUrl:
     "https://script.google.com/macros/s/AKfycbxbp9GKoluiN5HOq2l1vfa63ZMrKZH2bVooRMcL8ef-2MX1eham-ipCafQHg6AJ0eLd/exec",
-  welcomeNote: "Mình sẽ đồng hành cùng bạn trong thử thách thú vị này!",
-  participantCountFallback:
-    "Đã có hơn 0 người khám phá tính cách của mình rồi!",
+  welcomeNote: "Sẵn sàng vào đường đua tối ưu hiệu suất.",
+  participantCountFallback: "Hãy là người đầu tiên tham gia cuộc đua!",
 } as const;

@@ -52,7 +52,7 @@ export async function submitQuizResult(submission: QuizSubmission) {
     cauTraLoi: submission.answers.map((answer) => ({
       cauHoiId: answer.questionId,
       dapAn: answer.answerKey,
-      diem: answer.score,
+      thuocTinh: answer.attribute,
     })),
   };
 

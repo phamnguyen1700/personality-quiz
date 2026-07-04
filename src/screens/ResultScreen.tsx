@@ -1,93 +1,102 @@
-import { motion } from 'framer-motion'
-import { AnimatedAvatar } from '../components/AnimatedAvatar'
-import { Button } from '../components/Button'
-import { Celebration } from '../components/Celebration'
-import type { Player, ResultRule } from '../types/quiz'
+import { motion } from "framer-motion";
+import { Button } from "../components/Button";
+import { Celebration } from "../components/Celebration";
+import { TerminalWindow } from "../components/TerminalWindow";
+import type { Player, ResultRule } from "../types/quiz";
 
 type ResultScreenProps = {
-  player: Player
-  totalScore: number
-  result: ResultRule
-  onHome: () => void
-}
+  player: Player;
+  totalScore: number;
+  result: ResultRule;
+  onAvatar: () => void;
+  onHome: () => void;
+};
 
-const resultIcons = ['🎉', '🌟', '💎', '🚀', '🎯']
+const frameUrl = "/muda-assets/Flower%20frame.png";
 
-export function ResultScreen({ player, totalScore, result, onHome }: ResultScreenProps) {
+export function ResultScreen({ player, totalScore, result, onAvatar, onHome }: ResultScreenProps) {
+  const accentBox = {
+    borderColor: result.color.border,
+    background: result.color.soft,
+    boxShadow: `0 0 22px ${result.color.soft}`,
+  };
+
   return (
-    <main className="relative z-10 min-h-screen lg:grid lg:h-screen lg:grid-cols-[42%_58%] lg:overflow-hidden">
+    <main className="relative z-10 min-h-screen px-4 py-8 text-white sm:px-6 lg:grid lg:h-screen lg:place-items-center lg:overflow-hidden lg:px-10">
       <Celebration />
 
-      <motion.aside
-        initial={{ opacity: 0, x: -24 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="relative flex min-h-[280px] flex-col items-center justify-center gap-3 bg-mint/45 px-4 py-6 text-center lg:h-screen lg:min-h-0 lg:py-5"
+      <motion.section
+        initial={{ opacity: 0, y: 22, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        className="mx-auto w-full max-w-6xl"
       >
-        <AnimatedAvatar src={player.photoUrl} alt={player.name} size="lg" />
-        <div>
-          <h2 className="font-display text-2xl font-black text-ink xl:text-3xl">{player.name}</h2>
-          <div className="mx-auto mt-3 inline-flex rounded-full bg-orange px-4 py-2 font-display text-sm font-black text-white shadow-[0_4px_0_#cc4616] xl:text-base">
-            🏅 {result.title.split('-')[0].trim()}
-          </div>
-          <div className="mt-3 flex justify-center gap-2 text-xl text-sun xl:text-2xl" aria-hidden="true">
-            {resultIcons.map((icon, index) => (
-              <motion.span
-                key={icon}
-                animate={{ y: [0, -6, 0], rotate: [0, index % 2 ? -8 : 8, 0] }}
-                transition={{ duration: 1.4 + index * 0.12, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                {icon}
-              </motion.span>
-            ))}
-          </div>
-          <p className="mt-2 font-display text-base font-black text-brown xl:text-lg">{totalScore} điểm phù hợp ✨</p>
-        </div>
-      </motion.aside>
-
-      <section className="flex items-center justify-center px-4 py-5 lg:h-screen lg:min-h-0 lg:overflow-y-auto lg:px-7 xl:px-8">
-        <motion.div
-          initial={{ opacity: 0, x: 24 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="relative grid w-full max-w-xl gap-3 xl:gap-4"
-        >
-          <div>
-            <p className="font-hand text-base text-brown xl:text-lg">🎊 Bạn đã hoàn thành rồi {player.name}!</p>
-            <h1 className="mt-2 font-display text-xl font-black leading-tight text-ink sm:text-2xl xl:text-3xl">
-              {player.name} là...
-              <span className="block text-orange">🦁 {result.title}</span>
+        <TerminalWindow bodyClassName="grid gap-6 bg-[#252525] p-5 sm:p-7 lg:grid-cols-[0.8fr_1.25fr] lg:p-9">
+          <aside className="grid place-items-center gap-5 text-center">
+            <div
+              className="result-avatar-preview"
+              style={{
+                borderColor: result.color.border,
+                boxShadow: `0 0 0 2px ${result.color.soft}, 0 0 34px ${result.color.primary}55, 0 22px 42px rgba(0,0,0,0.44)`,
+              }}
+            >
+              <img src={player.photoUrl} alt={player.name} className="result-avatar-photo" />
+              <img src={frameUrl} alt="" className="result-avatar-art" aria-hidden="true" />
+            </div>
+            <h1
+              className="font-display text-3xl font-black uppercase leading-tight sm:text-4xl"
+              style={{ color: result.color.primary, textShadow: `0 0 18px ${result.color.soft}` }}
+            >
+              Chúc mừng!
+              <span className="block">Bạn chính là</span>
+              <span className="block">{result.title}!</span>
             </h1>
-            <div className="squiggle mt-3 h-4 w-28" />
+            <div className="font-mono text-xs font-black uppercase tracking-[0.16em] text-white/70">
+              Dominant {totalScore}/10
+            </div>
+          </aside>
+
+          <div className="grid gap-3">
+            <div className="border-2 p-4" style={accentBox}>
+              <h2 className="font-mono text-lg font-black uppercase" style={{ color: result.color.primary }}>
+                [Mô tả]
+              </h2>
+              <p className="mt-2 font-mono text-sm font-bold leading-relaxed text-white/86">{result.description}</p>
+            </div>
+            <div className="border-2 p-4" style={accentBox}>
+              <h2 className="font-mono text-lg font-black uppercase" style={{ color: result.color.primary }}>
+                [Bạn phù hợp làm việc với]
+              </h2>
+              <p className="mt-2 font-mono text-lg font-black" style={{ color: result.color.text }}>
+                {result.strengths[3] ?? "Đội tối ưu vận hành"}
+              </p>
+            </div>
+            <div className="border-2 p-4" style={accentBox}>
+              <h2 className="font-mono text-lg font-black uppercase" style={{ color: result.color.primary }}>
+                [Gợi ý tối ưu]
+              </h2>
+              <ul className="mt-2 grid gap-1 font-mono text-sm font-bold leading-relaxed text-white/86">
+                {result.weaknesses.map((item) => (
+                  <li key={item}>- {item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <Button
+                type="button"
+                onClick={onAvatar}
+                variant="secondary"
+                className="rounded-none"
+                style={{ background: result.color.primary }}
+              >
+                Tải xuống avatar &gt;
+              </Button>
+              <Button type="button" variant="ghost" onClick={onHome} className="rounded-none">
+                Về Home
+              </Button>
+            </div>
           </div>
-
-          <div className="inline-flex w-fit rounded-full bg-orange px-4 py-2 font-display text-sm font-black text-white shadow-[0_4px_0_#cc4616] xl:text-base">
-            Bứt phá. Sáng tạo. Truyền cảm hứng.
-          </div>
-
-          <p className="text-sm leading-relaxed text-brown xl:text-base">{result.description}</p>
-
-          <div className="rounded-2xl border-2 border-sun bg-cream/80 p-4 shadow-soft xl:p-5">
-            <h2 className="font-display text-base font-black text-brown xl:text-lg">🌞 Điểm mạnh của {player.name}</h2>
-            <ul className="mt-2 grid gap-1.5 font-display text-sm font-bold text-ink xl:text-base">
-              {result.strengths.map((item) => (
-                <li key={item}>▸ {item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="rounded-2xl border-2 border-green bg-mint/80 p-4 shadow-soft xl:p-5">
-            <h2 className="font-display text-base font-black text-teal xl:text-lg">🌱 Hướng phát triển cho {player.name}</h2>
-            <ul className="mt-2 grid gap-1.5 font-display text-sm font-bold text-ink xl:text-base">
-              {result.weaknesses.map((item) => (
-                <li key={item}>▸ {item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <Button onClick={onHome} className="w-full max-w-56 py-2 text-sm xl:text-base">
-            Kết thúc 👋
-          </Button>
-        </motion.div>
-      </section>
+        </TerminalWindow>
+      </motion.section>
     </main>
-  )
+  );
 }

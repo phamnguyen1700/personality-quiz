@@ -1,42 +1,29 @@
-import { motion } from 'framer-motion'
-import type { QuizAnswer } from '../types/quiz'
+import type { QuizAnswer } from "../types/quiz";
 
 type AnswerCardProps = {
-  answer: QuizAnswer
-  onSelect: () => void
-}
+  answer: QuizAnswer;
+  onSelect: () => void;
+};
 
-const cardColors = {
-  A: 'bg-sun shadow-[0_4px_0_#e4ae25]',
-  B: 'bg-green shadow-[0_4px_0_#5cc889]',
-  C: 'bg-pink shadow-[0_4px_0_#df83a0]',
-}
-
-const icons = {
-  A: '📋',
-  B: '💬',
-  C: '⚡',
-}
+const stripColors = {
+  A: "bg-green-400",
+  B: "bg-pink-500",
+  C: "bg-amber-300",
+  D: "bg-cyan-400",
+};
 
 export function AnswerCard({ answer, onSelect }: AnswerCardProps) {
   return (
-    <motion.button
+    <button
       type="button"
       onClick={onSelect}
-      whileHover={{ y: -4, rotate: answer.key === 'A' ? -1 : answer.key === 'B' ? 1 : -0.6 }}
-      whileTap={{ scale: 0.98, y: 2 }}
-      className={`w-full rounded-2xl px-3 py-2 text-left transition sm:py-2.5 xl:px-4 xl:py-3 ${cardColors[answer.key]}`}
+      className="group relative w-full border border-white/22 bg-[#1f1f1f] py-3 pl-12 pr-4 text-left shadow-[0_3px_5px_rgba(0,0,0,0.35)] transition hover:border-white/55 hover:bg-[#282828] sm:py-3.5"
     >
-      <span className="flex items-start gap-2.5 xl:gap-4">
-        <motion.span
-          animate={{ y: [0, -3, 0], rotate: [0, 4, -4, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          className="grid h-7 w-7 shrink-0 place-items-center rounded-xl border-2 border-white/70 bg-white/70 text-sm sm:h-8 sm:w-8 sm:text-base xl:h-9 xl:w-9 xl:text-lg"
-        >
-          {icons[answer.key]}
-        </motion.span>
-        <span className="font-display text-xs font-bold leading-snug text-ink sm:text-sm xl:text-base">{answer.label}</span>
+      <span className={`absolute left-0 top-0 h-full w-3 ${stripColors[answer.key]}`} aria-hidden="true" />
+      <span className="font-sans text-sm font-semibold leading-snug text-white sm:text-base">
+        <span className="font-bold">{answer.key}. </span>
+        {answer.label}
       </span>
-    </motion.button>
-  )
+    </button>
+  );
 }

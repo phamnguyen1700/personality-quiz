@@ -23,6 +23,7 @@ export type ResultRule = {
     text: string;
   };
   title: string;
+  wording: string;
   description: string;
   strengths: string[];
   weaknesses: string[];

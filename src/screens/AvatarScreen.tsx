@@ -2,14 +2,19 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../components/Button";
 import { TerminalWindow } from "../components/TerminalWindow";
-import type { Player, ResultRule } from "../types/quiz";
+import type { PersonalityAttribute, Player, ResultRule } from "../types/quiz";
 
 type AvatarScreenProps = {
   player: Player;
   result: ResultRule;
 };
 
-const frameUrl = "/muda-assets/Flower%20frame.png";
+const resultFrameByAttribute: Record<PersonalityAttribute, string> = {
+  "ĐP": "/muda-assets/result-frames/ava_red.png",
+  KL: "/muda-assets/result-frames/ava_yellow.png",
+  LH: "/muda-assets/result-frames/ava_green.png",
+  TG: "/muda-assets/result-frames/ava_blue.png",
+};
 
 function loadCanvasImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
@@ -38,6 +43,7 @@ function drawCoverImage(
 
 export function AvatarScreen({ player, result }: AvatarScreenProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const frameUrl = resultFrameByAttribute[result.attribute];
 
   const downloadAvatar = async () => {
     const canvas = canvasRef.current;
@@ -109,7 +115,7 @@ export function AvatarScreen({ player, result }: AvatarScreenProps) {
           <div>
             <div
               className="avatar-frame-preview mx-auto"
-              style={{ borderColor: result.color.border, boxShadow: `0 0 34px ${result.color.soft}` }}
+              style={{ borderColor: "transparent", boxShadow: `0 0 34px ${result.color.soft}` }}
             >
               <img src={player.photoUrl} alt={player.name} className="avatar-frame-photo" />
               <img src={frameUrl} alt="" className="avatar-frame-art" aria-hidden="true" />

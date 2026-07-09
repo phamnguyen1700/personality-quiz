@@ -57,7 +57,6 @@ function App() {
             totalScore={quiz.totalScore}
             result={quiz.result}
             onAvatar={quiz.showAvatar}
-            onHome={quiz.backHome}
           />
         ) : null}
 

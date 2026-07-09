@@ -10,6 +10,8 @@ export const resultRules: ResultRule[] = [
       text: "#ffd1df",
     },
     title: "TAY ĐUA ĐỘT PHÁ",
+    wording:
+      "Với tư duy tự động hóa, bạn không chọn cách tiết kiệm thủ công, mà bứt phá tiến độ bằng cách nâng cấp hệ thống và sức mạnh của tự động hóa!",
     description:
       "Bạn có xu hướng tận dụng công nghệ, AI và các cách làm mới để bứt tốc. Khi gặp lãng phí, bạn thường tìm công cụ hoặc giải pháp hiện đại để thay đổi cách vận hành nhanh hơn.",
     strengths: [
@@ -32,6 +34,7 @@ export const resultRules: ResultRule[] = [
       text: "#ffefb5",
     },
     title: "TAY ĐUA KỶ LUẬT",
+    wording: "Sự chuẩn xác và tinh tế của bạn chính là bệ phóng giúp đội nhà vận hành mượt mà.",
     description:
       "Bạn ưu tiên sự chuẩn xác, quy trình và kiểm soát chất lượng. Khi xử lý công việc, bạn muốn mọi thứ rõ ràng, có dấu vết, có tiêu chuẩn và ít sai sót nhất.",
     strengths: [
@@ -54,6 +57,8 @@ export const resultRules: ResultRule[] = [
       text: "#c4ffd5",
     },
     title: "TAY ĐUA LINH HOẠT",
+    wording:
+      "Với sự thấu cảm chuẩn Omotenashi, bạn gỡ bỏ mọi rào cản giao tiếp và quy trình rườm rà. Bạn không chỉ chạy đua, bạn còn mang lại trải nghiệm phối hợp đỉnh cao cho mọi người!",
     description:
       "Bạn đặt con người và bối cảnh thực tế vào trung tâm. Bạn giỏi lắng nghe, thích ứng và tìm cách xử lý mềm dẻo để công việc trôi chảy hơn.",
     strengths: [
@@ -76,6 +81,8 @@ export const resultRules: ResultRule[] = [
       text: "#d5f3ff",
     },
     title: "TAY ĐUA TINH GỌN",
+    wording:
+      "Nói không với những quy trình cồng kềnh và chi phí thừa, bạn luôn biết cách bóc tách những điều phức tạp để giúp bộ máy vận hành nhẹ nhàng và hiệu quả nhất!",
     description:
       "Bạn có xu hướng loại bỏ phần rườm rà, tối ưu luồng xử lý và hướng tới cách làm bền vững. Với bạn, ít hơn nhưng đúng trọng tâm chính là tốc độ.",
     strengths: [

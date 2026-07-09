@@ -4,12 +4,9 @@ import { AnswerCard } from "../components/AnswerCard";
 import { Button } from "../components/Button";
 import { ProgressBar } from "../components/ProgressBar";
 import { TerminalWindow } from "../components/TerminalWindow";
+import { TimerRing } from "../components/TimerRing";
 import { appConfig } from "../config/appConfig";
-import type {
-  AnswerKey,
-  Player,
-  QuizQuestion,
-} from "../types/quiz";
+import type { AnswerKey, Player, QuizQuestion } from "../types/quiz";
 
 type QuizScreenProps = {
   player: Player;
@@ -42,7 +39,12 @@ function QuestionCountdown({ onTimeout }: { onTimeout: () => void }) {
     return () => window.clearTimeout(timer);
   }, [onTimeout, secondsLeft]);
 
-  return <span>[ {secondsLeft}s ]</span>;
+  return (
+    <TimerRing
+      secondsLeft={secondsLeft}
+      totalSeconds={appConfig.questionTimeLimit}
+    />
+  );
 }
 
 export function QuizScreen({
@@ -79,13 +81,18 @@ export function QuizScreen({
             <div className="grid w-full max-w-[260px] gap-5">
               <div className="quiz-avatar-frame mx-auto grid h-40 w-40 place-items-center rounded-full border-[5px] border-amber-300 bg-[#141414]">
                 {player.photoUrl ? (
-                  <img src={player.photoUrl} alt={player.name} className="quiz-avatar-photo h-[118px] w-[118px] rounded-full object-cover" />
+                  <img
+                    src={player.photoUrl}
+                    alt={player.name}
+                    className="quiz-avatar-photo h-[118px] w-[118px] rounded-full object-cover"
+                  />
                 ) : (
                   <span className="font-mono text-lg text-white">[ USER ]</span>
                 )}
               </div>
               <h2 className="font-sans text-[1.35rem] font-black leading-tight text-white">
-                Chào [{player.name.toUpperCase()}]! Trả lời câu hỏi để tăng tốc trên đường đua nhé 😉
+                Chào {player.name.toUpperCase()}! Trả lời câu hỏi để tăng tốc
+                trên đường đua nhé 😉
               </h2>
               <p className="font-mono text-lg font-black text-amber-300">
                 Câu {progress}/{totalQuestions}
@@ -96,8 +103,8 @@ export function QuizScreen({
             </div>
           </aside>
 
-          <section className="relative grid gap-5 px-5 py-9 sm:px-8">
-            <div className="absolute right-8 top-4 font-mono text-2xl font-black text-amber-300">
+          <section className="grid gap-3 px-5 pb-7 pt-3 sm:px-6 sm:pb-8 sm:pt-4">
+            <div className="-mr-1 flex justify-end sm:-mr-2">
               <QuestionCountdown key={question.id} onTimeout={onTimeout} />
             </div>
             <AnimatePresence mode="wait">
@@ -107,7 +114,7 @@ export function QuizScreen({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -14, scale: 0.98 }}
                 transition={{ duration: 0.32, ease: "easeInOut" }}
-                className="grid gap-5 pt-11"
+                className="grid gap-5"
               >
                 <div className="bg-amber-300 px-5 py-6 text-center text-black">
                   <h1 className="font-sans text-base font-black leading-tight sm:text-lg">
@@ -119,15 +126,21 @@ export function QuizScreen({
                   {question.answers.map((answer) => (
                     <div
                       key={answer.key}
-                      className={selectedAnswer === answer.key ? "ring-2 ring-amber-300" : ""}
+                      className={
+                        selectedAnswer === answer.key
+                          ? "ring-2 ring-amber-300"
+                          : ""
+                      }
                     >
-                      <AnswerCard answer={answer} onSelect={() => setSelectedAnswer(answer.key)} />
+                      <AnswerCard
+                        answer={answer}
+                        onSelect={() => setSelectedAnswer(answer.key)}
+                      />
                     </div>
                   ))}
                 </div>
               </motion.div>
             </AnimatePresence>
-
           </section>
         </TerminalWindow>
         <div className="mt-4 flex justify-end">

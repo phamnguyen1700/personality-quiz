@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "../components/Button";
+import { TerminalWindow } from "../components/TerminalWindow";
 
 type ReadyScreenProps = {
   onStart: () => void;
@@ -8,15 +9,19 @@ type ReadyScreenProps = {
 export function ReadyScreen({ onStart }: ReadyScreenProps) {
   return (
     <main className="relative z-10 grid min-h-screen place-items-center px-4 py-8 text-center text-white">
-      <motion.section initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="max-w-5xl">
-        <h1 className="font-display text-[clamp(2.2rem,7vw,4.8rem)] font-black uppercase leading-tight tracking-wide text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.7)]">
-          Bạn đã hoàn thành ghi danh!
-          <span className="block">Sẵn sàng tham gia đường đua?</span>
-        </h1>
-        <Button onClick={onStart} variant="secondary" className="mt-8 min-w-64">
-          Bắt đầu đua &gt;
-        </Button>
-      </motion.section>
+      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-3xl">
+        <TerminalWindow bodyClassName="grid min-h-[280px] place-items-center bg-[#5a210f] px-5 py-12 text-center">
+          <div>
+            <h1 className="font-display text-2xl font-black uppercase leading-tight text-white sm:text-4xl">
+              Bạn đã hoàn thành ghi danh!
+              <span className="block">Sẵn sàng tham gia đường đua?</span>
+            </h1>
+            <Button onClick={onStart} variant="secondary" className="mt-8 min-w-64">
+              Bắt đầu đua &gt;
+            </Button>
+          </div>
+        </TerminalWindow>
+      </motion.div>
     </main>
   );
 }

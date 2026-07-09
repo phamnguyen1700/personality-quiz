@@ -39,6 +39,7 @@ export function useQuizEngine() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<AnswerRecord[]>([]);
   const [failedQuestionNumber, setFailedQuestionNumber] = useState<number | null>(null);
+  const [hasSubmittedResult, setHasSubmittedResult] = useState(false);
 
   const currentQuestion = questions[currentQuestionIndex];
   const attributeCounts = useMemo(() => getAttributeCounts(answers), [answers]);
@@ -87,18 +88,6 @@ export function useQuizEngine() {
     setAnswers(nextAnswers);
 
     if (currentQuestionIndex + 1 >= questions.length) {
-      const nextResult = getResultRule(nextAnswers);
-      const nextCounts = getAttributeCounts(nextAnswers);
-      const dominantCount = Math.max(...Object.values(nextCounts));
-
-      void submitQuizResult({
-        player,
-        answers: nextAnswers,
-        totalScore: dominantCount,
-        result: nextResult,
-        status: "Hoàn thành",
-      }).catch(() => undefined);
-
       setScreen("result");
       return;
     }
@@ -115,15 +104,34 @@ export function useQuizEngine() {
     setAnswers([]);
     setCurrentQuestionIndex(0);
     setFailedQuestionNumber(null);
+    setHasSubmittedResult(false);
     setScreen("quiz");
   };
 
-  const showAvatar = () => setScreen("avatar");
+  const showAvatar = () => {
+    if (!hasSubmittedResult) {
+      setHasSubmittedResult(true);
+
+      void submitQuizResult({
+        player,
+        answers,
+        totalScore,
+        result,
+        status: "Hoàn thành",
+      }).catch((error) => {
+        setHasSubmittedResult(false);
+        console.error("Failed to submit quiz result", error);
+      });
+    }
+
+    setScreen("avatar");
+  };
 
   const backHome = () => {
     setAnswers([]);
     setCurrentQuestionIndex(0);
     setFailedQuestionNumber(null);
+    setHasSubmittedResult(false);
     setPlayer(emptyPlayer);
     setScreen("landing");
   };

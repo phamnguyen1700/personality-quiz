@@ -55,6 +55,7 @@ function App() {
             key="result"
             player={quiz.player}
             result={quiz.result}
+            onNameChange={quiz.updatePlayerName}
             onAvatar={quiz.showAvatar}
           />
         ) : null}

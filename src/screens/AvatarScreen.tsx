@@ -9,8 +9,15 @@ type AvatarScreenProps = {
   result: ResultRule;
 };
 
+const CANVAS_SIZE = 2000;
+const FRAME_PHOTO_CIRCLE = {
+  x: 250,
+  y: 250,
+  size: 1500,
+};
+
 const resultFrameByAttribute: Record<PersonalityAttribute, string> = {
-  "ĐP": "/muda-assets/result-frames/ava_red.png",
+  ĐP: "/muda-assets/result-frames/ava_red.png",
   KL: "/muda-assets/result-frames/ava_blue.png",
   LH: "/muda-assets/result-frames/ava_green.png",
   TG: "/muda-assets/result-frames/ava_yellow.png",
@@ -36,9 +43,9 @@ function drawCoverImage(
   const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
   const scaledWidth = image.naturalWidth * scale;
   const scaledHeight = image.naturalHeight * scale;
-  const sourceX = x + (width - scaledWidth) / 2;
-  const sourceY = y + (height - scaledHeight) / 2;
-  context.drawImage(image, sourceX, sourceY, scaledWidth, scaledHeight);
+  const offsetX = x + (width - scaledWidth) / 2;
+  const offsetY = y + (height - scaledHeight) / 2;
+  context.drawImage(image, offsetX, offsetY, scaledWidth, scaledHeight);
 }
 
 export function AvatarScreen({ player, result }: AvatarScreenProps) {
@@ -52,57 +59,50 @@ export function AvatarScreen({ player, result }: AvatarScreenProps) {
       return;
     }
 
-    canvas.width = 1080;
-    canvas.height = 1080;
-    context.clearRect(0, 0, 1080, 1080);
-    context.fillStyle = "#050505";
-    context.fillRect(0, 0, 1080, 1080);
+    canvas.width = CANVAS_SIZE;
+    canvas.height = CANVAS_SIZE;
+    context.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
 
-    context.save();
-    context.shadowColor = result.color.primary;
-    context.shadowBlur = 48;
-    context.strokeStyle = result.color.border;
-    context.lineWidth = 18;
-    context.beginPath();
-    context.arc(540, 456, 308, 0, Math.PI * 2);
-    context.stroke();
-    context.restore();
-
-    context.save();
-    context.beginPath();
-    context.arc(540, 456, 292, 0, Math.PI * 2);
-    context.clip();
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
     try {
       const image = await loadCanvasImage(player.photoUrl);
-      context.imageSmoothingEnabled = true;
-      context.imageSmoothingQuality = "high";
-      drawCoverImage(context, image, 248, 164, 584, 584);
+      context.save();
+      context.beginPath();
+      context.arc(
+        FRAME_PHOTO_CIRCLE.x + FRAME_PHOTO_CIRCLE.size / 2,
+        FRAME_PHOTO_CIRCLE.y + FRAME_PHOTO_CIRCLE.size / 2,
+        FRAME_PHOTO_CIRCLE.size / 2,
+        0,
+        Math.PI * 2,
+      );
+      context.clip();
+      drawCoverImage(
+        context,
+        image,
+        FRAME_PHOTO_CIRCLE.x,
+        FRAME_PHOTO_CIRCLE.y,
+        FRAME_PHOTO_CIRCLE.size,
+        FRAME_PHOTO_CIRCLE.size,
+      );
+      context.restore();
     } catch {
-      context.fillStyle = "#171717";
-      context.fillRect(248, 164, 584, 584);
+      // Keep the white backdrop if the user image cannot be drawn.
     }
-    context.restore();
 
     try {
       const frame = await loadCanvasImage(frameUrl);
-      context.drawImage(frame, 0, 0, 1080, 1080);
+      context.drawImage(frame, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
     } catch {
-      context.strokeStyle = result.color.border;
-      context.lineWidth = 18;
-      context.strokeRect(64, 64, 952, 952);
+      return;
     }
 
-    context.textAlign = "center";
-    context.fillStyle = "#ffffff";
-    context.font = "900 44px Consolas, monospace";
-    context.fillText(player.name.toUpperCase(), 540, 870);
-    context.fillStyle = result.color.primary;
-    context.font = "900 58px Consolas, monospace";
-    context.fillText(result.title.toUpperCase(), 540, 940);
-
+    const safeName = player.name.trim().toLowerCase().replace(/\s+/g, "-") || "avatar";
     const link = document.createElement("a");
-    link.download = `muda-buster-${player.name.toLowerCase().replace(/\s+/g, "-")}.png`;
+    link.download = `muda-buster-${safeName}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
   };
@@ -113,10 +113,7 @@ export function AvatarScreen({ player, result }: AvatarScreenProps) {
       <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-3xl">
         <TerminalWindow bodyClassName="grid min-h-[390px] place-items-center bg-[#252525] px-5 py-8 text-center">
           <div>
-            <div
-              className="avatar-frame-preview mx-auto"
-              style={{ borderColor: "transparent", boxShadow: `0 0 34px ${result.color.soft}` }}
-            >
+            <div className="avatar-frame-preview mx-auto">
               <img src={player.photoUrl} alt={player.name} className="avatar-frame-photo" />
               <img src={frameUrl} alt="" className="avatar-frame-art" aria-hidden="true" />
             </div>

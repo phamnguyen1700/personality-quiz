@@ -53,6 +53,10 @@ export function useQuizEngine() {
     setScreen("photo");
   };
 
+  const updatePlayerName = (name: string) => {
+    setPlayer((current) => ({ ...current, name }));
+  };
+
   const submitPhoto = (photoUrl: string) => {
     setPlayer((current) => ({ ...current, photoUrl }));
     setScreen("ready");
@@ -137,6 +141,7 @@ export function useQuizEngine() {
     startWelcome,
     continueToName,
     submitName,
+    updatePlayerName,
     submitPhoto,
     startQuiz,
     submitAnswer,

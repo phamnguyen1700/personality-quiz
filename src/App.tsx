@@ -54,7 +54,6 @@ function App() {
           <ResultScreen
             key="result"
             player={quiz.player}
-            totalScore={quiz.totalScore}
             result={quiz.result}
             onAvatar={quiz.showAvatar}
           />

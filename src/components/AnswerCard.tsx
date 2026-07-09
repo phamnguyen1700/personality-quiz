@@ -17,10 +17,10 @@ export function AnswerCard({ answer, onSelect }: AnswerCardProps) {
     <button
       type="button"
       onClick={onSelect}
-      className="group relative w-full border border-white/22 bg-[#1f1f1f] py-3 pl-12 pr-4 text-left shadow-[0_3px_5px_rgba(0,0,0,0.35)] transition hover:border-white/55 hover:bg-[#282828] sm:py-3.5"
+      className="group relative w-full border border-white/22 bg-[#1f1f1f] py-2.5 pl-11 pr-4 text-left shadow-[0_3px_5px_rgba(0,0,0,0.35)] transition hover:border-white/55 hover:bg-[#282828] sm:py-3"
     >
       <span className={`absolute left-0 top-0 h-full w-3 ${stripColors[answer.key]}`} aria-hidden="true" />
-      <span className="font-sans text-sm font-semibold leading-snug text-white sm:text-base">
+      <span className="font-sans text-sm font-semibold leading-snug text-white sm:text-[0.95rem]">
         <span className="font-bold">{answer.key}. </span>
         {answer.label}
       </span>

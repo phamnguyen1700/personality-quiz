@@ -34,8 +34,8 @@ export function LandingScreen({ onStart }: LandingScreenProps) {
   }, []);
 
   return (
-    <main className="relative z-10 min-h-screen overflow-hidden px-5 py-5 text-white sm:px-8 lg:px-12">
-      <header className="flex items-start justify-between gap-4">
+    <main className="relative z-10 flex h-[100dvh] flex-col overflow-hidden px-7 py-6 text-white sm:px-10 lg:px-16">
+      <header className="flex shrink-0 items-start justify-between gap-4">
         <div className="font-display text-xl font-black tracking-tight sm:text-2xl">Panasonic</div>
         <div className="text-right font-mono text-[0.65rem] font-black uppercase tracking-[0.38em] text-white/70 sm:text-xs">
           <span className="block">Muda</span>
@@ -43,7 +43,7 @@ export function LandingScreen({ onStart }: LandingScreenProps) {
         </div>
       </header>
 
-      <section className="grid min-h-[calc(100vh-72px)] items-center gap-10 pb-10 pt-8 lg:grid-cols-[1fr_0.82fr] lg:pb-0">
+      <section className="grid min-h-0 flex-1 items-center gap-10 pb-10 pt-6 lg:grid-cols-[1fr_0.82fr] lg:pb-4">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -88,7 +88,7 @@ export function LandingScreen({ onStart }: LandingScreenProps) {
               Thử ngay trắc nghiệm để đọc vị phong cách làm việc và nhận ngay bí kíp loại bỏ lãng phí!
             </span>
           </p>
-          <Button onClick={onStart} className="landing-cta-button mt-4 w-full max-w-sm sm:w-auto sm:min-w-[360px]">
+          <Button onClick={onStart} className="landing-cta-button mt-4 w-full max-w-[330px] sm:w-auto sm:min-w-[360px]">
             Tham gia trò chơi !
           </Button>
         </motion.div>

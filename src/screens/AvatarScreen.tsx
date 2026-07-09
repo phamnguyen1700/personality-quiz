@@ -11,9 +11,9 @@ type AvatarScreenProps = {
 
 const resultFrameByAttribute: Record<PersonalityAttribute, string> = {
   "ĐP": "/muda-assets/result-frames/ava_red.png",
-  KL: "/muda-assets/result-frames/ava_yellow.png",
+  KL: "/muda-assets/result-frames/ava_blue.png",
   LH: "/muda-assets/result-frames/ava_green.png",
-  TG: "/muda-assets/result-frames/ava_blue.png",
+  TG: "/muda-assets/result-frames/ava_yellow.png",
 };
 
 function loadCanvasImage(src: string) {
@@ -122,8 +122,8 @@ export function AvatarScreen({ player, result }: AvatarScreenProps) {
             </div>
             <Button
               onClick={downloadAvatar}
-              className="mt-6 min-w-80 rounded-none text-black"
-              style={{ background: result.color.primary }}
+              variant="secondary"
+              className="mt-6 min-w-80 rounded-none"
             >
               Tải xuống avatar (.png)
             </Button>

@@ -12,7 +12,7 @@ export function DecorativeLayer() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(255,211,118,0.2),transparent_18%),linear-gradient(180deg,rgba(0,8,18,0.32),rgba(0,0,0,0.78))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(255,211,118,0.2),transparent_18%),radial-gradient(circle_at_50%_92%,rgba(255,90,0,0.16),transparent_34%),linear-gradient(180deg,rgba(0,8,18,0.22),rgba(0,0,0,0.22))]" />
       {icons.map((icon, index) => (
         <span
           key={`${icon.label}-${icon.className}`}

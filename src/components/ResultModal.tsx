@@ -4,28 +4,26 @@ import type { PersonalityAttribute, Player, ResultRule } from "../types/quiz";
 type ResultModalProps = {
   player: Player;
   result: ResultRule;
-  totalScore: number;
   onAvatar: () => void;
 };
 
 const resultFrameByAttribute: Record<PersonalityAttribute, string> = {
   ĐP: "/muda-assets/result-frames/ava_red.png",
-  KL: "/muda-assets/result-frames/ava_yellow.png",
+  KL: "/muda-assets/result-frames/ava_blue.png",
   LH: "/muda-assets/result-frames/ava_green.png",
-  TG: "/muda-assets/result-frames/ava_blue.png",
+  TG: "/muda-assets/result-frames/ava_yellow.png",
 };
 
 const resultHeroByAttribute: Record<PersonalityAttribute, string> = {
   ĐP: "/muda-assets/heroes/racer_red_cropped.png",
-  KL: "/muda-assets/heroes/racer_yellow_cropped.png",
+  KL: "/muda-assets/heroes/racer_blue_cropped.png",
   LH: "/muda-assets/heroes/racer_green_cropped.png",
-  TG: "/muda-assets/heroes/racer_blue_cropped.png",
+  TG: "/muda-assets/heroes/racer_yellow_cropped.png",
 };
 
 export function ResultModal({
   player,
   result,
-  totalScore,
   onAvatar,
 }: ResultModalProps) {
   const frameUrl = resultFrameByAttribute[result.attribute];
@@ -131,9 +129,9 @@ export function ResultModal({
             aria-hidden="true"
           />
         </div>
-        <div className="relative mt-4 font-mono text-xs font-black uppercase tracking-[0.18em] text-white/70 lg:absolute lg:bottom-8 lg:left-40">
+        {/* <div className="relative mt-4 font-mono text-xs font-black uppercase tracking-[0.18em] text-white/70 lg:absolute lg:bottom-8 lg:left-40">
           Dominant {totalScore}/10
-        </div>
+        </div> */}
       </aside>
     </section>
   );

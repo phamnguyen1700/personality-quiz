@@ -5,12 +5,11 @@ import type { Player, ResultRule } from "../types/quiz";
 
 type ResultScreenProps = {
   player: Player;
-  totalScore: number;
   result: ResultRule;
   onAvatar: () => void;
 };
 
-export function ResultScreen({ player, totalScore, result, onAvatar }: ResultScreenProps) {
+export function ResultScreen({ player, result, onAvatar }: ResultScreenProps) {
   return (
     <main className="relative z-10 min-h-screen px-4 py-8 text-white sm:px-6 lg:grid lg:h-screen lg:place-items-center lg:overflow-hidden lg:px-10">
       <Celebration />
@@ -20,7 +19,7 @@ export function ResultScreen({ player, totalScore, result, onAvatar }: ResultScr
         animate={{ opacity: 1, y: 0, scale: 1 }}
         className="mx-auto w-full max-w-5xl"
       >
-        <ResultModal player={player} totalScore={totalScore} result={result} onAvatar={onAvatar} />
+        <ResultModal player={player} result={result} onAvatar={onAvatar} />
       </motion.section>
     </main>
   );

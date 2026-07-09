@@ -56,8 +56,8 @@ button {
 .muda-app {
   isolation: isolate;
   background:
-    linear-gradient(180deg, rgba(0, 8, 18, 0.04), rgba(0, 0, 0, 0.5)),
-    url("/muda-assets/MUDA%20BUSTER%20BACKGROUND.jpg") center / cover fixed no-repeat,
+    linear-gradient(180deg, rgba(0, 8, 18, 0.04), rgba(0, 0, 0, 0.28)),
+    url("/muda-assets/MUDA%20BUSTER%20BACKGROUND.jpg") center / 100% 100% fixed no-repeat,
     #020711;
 }
 
@@ -70,6 +70,7 @@ button {
   background:
     radial-gradient(circle at 50% 48%, rgba(255, 191, 25, 0.22), transparent 19%),
     radial-gradient(circle at 8% 78%, rgba(255, 90, 0, 0.24), transparent 24%),
+    radial-gradient(circle at 50% 92%, rgba(255, 90, 0, 0.12), transparent 34%),
     linear-gradient(90deg, rgba(0, 0, 0, 0.28), transparent 36%, rgba(0, 0, 0, 0.3));
 }
 
@@ -142,11 +143,7 @@ button {
   position: relative;
   justify-self: end;
   max-width: 760px;
-  padding: 12px 18px 8px;
-  border-radius: 999px;
-  background:
-    radial-gradient(ellipse at 50% 100%, rgba(255, 100, 0, 0.28), transparent 62%),
-    linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.24) 18%, rgba(0, 0, 0, 0.24) 82%, transparent);
+  padding: 0;
 }
 
 .landing-cta strong {
@@ -461,7 +458,8 @@ button {
 
   .landing-cta {
     justify-self: center;
-    padding-inline: 10px;
+    width: min(100%, 520px);
+    padding-inline: 14px;
   }
 
   .landing-cta-button {

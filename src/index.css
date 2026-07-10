@@ -28,8 +28,13 @@
   box-sizing: border-box;
 }
 
+:root {
+  color-scheme: only light;
+}
+
 html {
   background: #020711;
+  color-scheme: only light;
 }
 
 body {
@@ -37,6 +42,8 @@ body {
   min-width: 320px;
   background: #020711;
   color: #fff;
+  color-scheme: only light;
+  forced-color-adjust: none;
   font-family: "GMV DIN Pro Cond", "Arial Narrow", system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: 0;
@@ -55,6 +62,8 @@ button {
 
 .muda-app {
   isolation: isolate;
+  color-scheme: only light;
+  forced-color-adjust: none;
   background:
     linear-gradient(180deg, rgba(0, 8, 18, 0.04), rgba(0, 0, 0, 0.28)),
     url("/muda-assets/MUDA%20BUSTER%20BACKGROUND.jpg") center / 100% 100% fixed no-repeat,
@@ -374,6 +383,8 @@ button {
 }
 
 .result-art-screen {
+  color-scheme: only light;
+  forced-color-adjust: none;
   background:
     linear-gradient(180deg, rgba(0, 8, 18, 0.04), rgba(0, 0, 0, 0.28)),
     url("/muda-assets/MUDA%20BUSTER%20BACKGROUND.jpg") center / 100% 100% fixed no-repeat,
@@ -384,6 +395,8 @@ button {
   position: relative;
   width: min(94vw, 1120px);
   aspect-ratio: 16 / 9;
+  color-scheme: only light;
+  forced-color-adjust: none;
   background: var(--result-modal-desktop) center / 100% 100% no-repeat;
   filter: drop-shadow(0 30px 70px rgba(0, 0, 0, 0.52));
 }
@@ -746,17 +759,21 @@ button {
   }
 
   .landing-art-screen {
-    --landing-mobile-logo-top: clamp(88px, 20vh, 500px);
+    --landing-mobile-stack-top: clamp(88px, 14vh, 128px);
+    --landing-mobile-logo-to-muda-gap: clamp(20px, 3vh, 124px);
+    --landing-mobile-muda-to-character-gap: clamp(300px, 35vh, 350px);
+    --landing-mobile-character-to-content-gap: clamp(30px, 5vh, 120px);
+    --landing-mobile-logo-top: var(--landing-mobile-stack-top);
     --landing-mobile-logo-width: min(68vw, 340px);
     --landing-mobile-logo-scale: 1;
-    --landing-mobile-muda-top: clamp(196px, 20vh, 322px);
+    --landing-mobile-muda-top: calc(var(--landing-mobile-stack-top) + var(--landing-mobile-logo-to-muda-gap));
     --landing-mobile-muda-width: min(380vw, 2800px);
     --landing-mobile-muda-scale: 1.8;
-    --landing-mobile-character-bottom: clamp(300px, 30vh, 414px);
+    --landing-mobile-character-top: calc(var(--landing-mobile-muda-top) + var(--landing-mobile-muda-to-character-gap));
     --landing-mobile-character-width: min(108vw, 820px);
-    --landing-mobile-content-bottom: max(190px, env(safe-area-inset-bottom));
+    --landing-mobile-content-top: calc(var(--landing-mobile-character-top) + var(--landing-mobile-character-to-content-gap));
     --landing-mobile-content-width: min(100vw, 760px);
-    --landing-mobile-content-gap: clamp(8px, 1vh, 16px);
+    --landing-mobile-content-gap: clamp(15px, 7vh, 30px);
     --landing-mobile-button-width: min(74vw, 220px);
     --landing-mobile-button-overlap: -75px;
     background:
@@ -794,9 +811,9 @@ button {
   }
 
   .landing-character-art {
-    top: auto;
+    top: var(--landing-mobile-character-top);
     right: auto;
-    bottom: var(--landing-mobile-character-bottom);
+    bottom: auto;
     left: 60%;
     width: var(--landing-mobile-character-width);
     height: auto;
@@ -805,7 +822,8 @@ button {
 
   .landing-content-lockup {
     right: auto;
-    bottom: var(--landing-mobile-content-bottom);
+    top: var(--landing-mobile-content-top);
+    bottom: auto;
     left: 50%;
     width: var(--landing-mobile-content-width);
     gap: var(--landing-mobile-content-gap);

@@ -26,6 +26,8 @@ type DragState = {
 const PREVIEW_SIZE = 230;
 const OUTPUT_SIZE = 512;
 const CROP_ZOOM = 1.16;
+const MAX_PHOTO_SIZE_MB = 4;
+const MAX_PHOTO_SIZE_BYTES = MAX_PHOTO_SIZE_MB * 1024 * 1024;
 
 const clamp = (value: number, min = 0, max = 100) =>
   Math.min(max, Math.max(min, value));
@@ -41,6 +43,7 @@ export function PhotoScreen({ onSubmit }: PhotoScreenProps) {
     y: 50,
   });
   const [submitted, setSubmitted] = useState(false);
+  const [photoError, setPhotoError] = useState("");
 
   const getImageMetrics = () => {
     const width = imageSize?.width ?? imageRef.current?.naturalWidth ?? 0;
@@ -85,6 +88,20 @@ export function PhotoScreen({ onSubmit }: PhotoScreenProps) {
       return;
     }
 
+    if (file.size > MAX_PHOTO_SIZE_BYTES) {
+      if (photoUrl) {
+        URL.revokeObjectURL(photoUrl);
+      }
+
+      setPhotoUrl("");
+      setImageSize(null);
+      setPhotoError(
+        `Ảnh đại diện tối đa ${MAX_PHOTO_SIZE_MB}MB. Vui lòng chọn ảnh nhẹ hơn.`,
+      );
+      event.target.value = "";
+      return;
+    }
+
     if (photoUrl) {
       URL.revokeObjectURL(photoUrl);
     }
@@ -94,6 +111,7 @@ export function PhotoScreen({ onSubmit }: PhotoScreenProps) {
     setImageSize(null);
     setCropPosition({ x: 50, y: 50 });
     setSubmitted(false);
+    setPhotoError("");
   };
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
@@ -180,10 +198,12 @@ export function PhotoScreen({ onSubmit }: PhotoScreenProps) {
 
   const handlePrimaryAction = () => {
     if (!photoUrl) {
+      setPhotoError("Bạn cần chọn ảnh từ máy.");
       inputRef.current?.click();
       return;
     }
 
+    setPhotoError("");
     onSubmit(createCroppedPhoto());
   };
 
@@ -231,7 +251,7 @@ export function PhotoScreen({ onSubmit }: PhotoScreenProps) {
                   }}
                 />
               ) : (
-                <span className="text-5xl font-light">+</span>
+                <span className="photo-size-hint">4MB</span>
               )}
             </div>
 
@@ -248,9 +268,9 @@ export function PhotoScreen({ onSubmit }: PhotoScreenProps) {
             <p className="mt-5 font-mono text-base font-black leading-relaxed text-white sm:text-lg">
               Tải lên ảnh đại diện của bạn để hoàn thành đăng ký đường đua
             </p>
-            {submitted && !photoUrl ? (
+            {photoError || (submitted && !photoUrl) ? (
               <p className="mt-2 font-mono text-sm font-bold text-amber-300">
-                Bạn cần chọn ảnh từ máy.
+                {photoError || "Bạn cần chọn ảnh từ máy."}
               </p>
             ) : null}
 
